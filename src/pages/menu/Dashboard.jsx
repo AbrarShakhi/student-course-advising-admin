@@ -196,7 +196,16 @@ export default function Dashboard() {
     const endpoint = model.endpoint;
     const pk_fields = model.pk_fields;
     const pkPath = pk_fields
-      .map((key) => encodeURIComponent(item[key]))
+      .map((key) => {
+        // Convert numeric primary key parts to strings for the URL path
+        if (
+          (model.name === "Section" || model.name === "Offers") &&
+          (key === "season_id" || key === "year" || key === "section_no")
+        ) {
+          return encodeURIComponent(String(item[key]));
+        }
+        return encodeURIComponent(item[key]);
+      })
       .join("/");
     return `${API_URL}/${endpoint}/${pkPath}`;
   };
@@ -455,8 +464,8 @@ function Modal({
         { name: "year", type: "select" },
         { name: "section_no", type: "number" },
         { name: "course_id", type: "select" },
-        { name: "room_no", type: "select" },
         { name: "capacity", type: "number" },
+        { name: "room_no", type: "select" },
         { name: "day", type: "select" },
         { name: "start_time", type: "select" },
         { name: "end_time", type: "select" },
@@ -529,6 +538,14 @@ function Modal({
 
     let url;
     let method;
+
+    // const requestData = { ...formData };
+    // if (activeModel === "Section") {
+    //   requestData.season_id = parseInt(requestData.season_id);
+    //   requestData.year = parseInt(requestData.year);
+    //   requestData.section_no = parseInt(requestData.section_no);
+    //   requestData.capacity = parseInt(requestData.capacity);
+    // }
 
     if (currentEditItem) {
       const pkPath = pk_fields
