@@ -39,7 +39,7 @@ export default function Dashboard() {
   const [students, setStudents] = useState([]);
   const [sections, setSections] = useState([]);
   const [faculty, setFaculty] = useState([]);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
 
   const API_URL = "http://localhost:5000/crud";
@@ -188,7 +188,7 @@ export default function Dashboard() {
 
   const handleDeleteClick = (item) => {
     setItemToDelete(item);
-    setIsConfirmModalOpen(true);
+    setIsConfirmModal(true);
   };
 
   // Helper function to build the delete URL for composite keys
@@ -202,7 +202,7 @@ export default function Dashboard() {
   };
 
   const handleDeleteConfirm = async () => {
-    setIsConfirmModalOpen(false);
+    setIsConfirmModal(false);
     try {
       setLoading(true);
       const selectedModel = models.find((m) => m.name === activeModel);
@@ -231,124 +231,126 @@ export default function Dashboard() {
   const dataKeys = data.length > 0 ? Object.keys(data[0]) : [];
 
   return (
-    <div className="dashboard-container">
+    <>
       <Toaster position="top-right" />
-      <header className="dashboard-header">
-        <h2 className="dashboard-title">{activeModel} Management</h2>
-        <div className="button-group">
-          {models.map((model) => (
-            <button
-              key={model.name}
-              onClick={() => {
-                setActiveModel(model.name);
-                setData([]);
-              }}
-              className={`refresh-button ${
-                activeModel === model.name ? "active-model" : ""
-              }`}
-            >
-              <model.icon size={18} className="button-icon" />
-              {model.name}
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <h2 className="dashboard-title">{activeModel} Management</h2>
+          <div className="button-group">
+            {models.map((model) => (
+              <button
+                key={model.name}
+                onClick={() => {
+                  setActiveModel(model.name);
+                  setData([]);
+                }}
+                className={`refresh-button ${
+                  activeModel === model.name ? "active-model" : ""
+                }`}
+              >
+                <model.icon size={18} className="button-icon" />
+                {model.name}
+              </button>
+            ))}
+            <button onClick={fetchData} className="refresh-button">
+              <RefreshCcw size={18} className="button-icon" />
+              Refresh
             </button>
-          ))}
-          <button onClick={fetchData} className="refresh-button">
-            <RefreshCcw size={18} className="button-icon" />
-            Refresh
-          </button>
-          <button onClick={handleCreate} className="add-button">
-            <PlusCircle size={18} className="button-icon" />
-            Add New {activeModel}
-          </button>
-        </div>
-      </header>
-      {loading ? (
-        <div className="loading-container">
-          <div className="loading-spinner">
-            <div></div>
+            <button onClick={handleCreate} className="add-button">
+              <PlusCircle size={18} className="button-icon" />
+              Add New {activeModel}
+            </button>
           </div>
-          <p>Loading...</p>
-        </div>
-      ) : error ? (
-        <div className="error-message">{error}</div>
-      ) : (
-        <div className="table-container">
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  {dataKeys.map((key) => (
-                    <th key={key}>{key.split("_").join(" ")}</th>
-                  ))}
-                  <th className="action-cell">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.length > 0 ? (
-                  data.map((item, index) => (
-                    <tr key={index}>
-                      {dataKeys.map((key) => (
-                        <td key={key}>{String(item[key])}</td>
-                      ))}
-                      <td className="action-cell">
-                        <button
-                          onClick={() => handleEdit(item)}
-                          className="action-button edit-button"
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteClick(item)}
-                          className="action-button delete-button"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+        </header>
+        {loading ? (
+          <div className="loading-container">
+            <div className="loading-spinner">
+              <div></div>
+            </div>
+            <p>Loading...</p>
+          </div>
+        ) : error ? (
+          <div className="error-message">{error}</div>
+        ) : (
+          <div className="table-container">
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    {dataKeys.map((key) => (
+                      <th key={key}>{key.split("_").join(" ")}</th>
+                    ))}
+                    <th className="action-cell">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.length > 0 ? (
+                    data.map((item, index) => (
+                      <tr key={index}>
+                        {dataKeys.map((key) => (
+                          <td key={key}>{String(item[key])}</td>
+                        ))}
+                        <td className="action-cell">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="action-button edit-button"
+                          >
+                            <Edit size={18} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteClick(item)}
+                            className="action-button delete-button"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={dataKeys.length + 1}>
+                        <div className="no-data-message">
+                          No {activeModel} data available.
+                        </div>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={dataKeys.length + 1}>
-                      <div className="no-data-message">
-                        No {activeModel} data available.
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {isModalOpen && (
-        <Modal
-          activeModel={activeModel}
-          onClose={() => setIsModalOpen(false)}
-          onSuccess={fetchData}
-          currentEditItem={currentEditItem}
-          models={models}
-          departments={departments}
-          courses={courses}
-          creditParts={creditParts}
-          seasons={seasons}
-          years={years}
-          rooms={rooms}
-          timeslots={timeslots}
-          students={students}
-          sections={sections}
-          faculty={faculty}
-          API_URL={API_URL}
-        />
-      )}
+        {isModalOpen && (
+          <Modal
+            activeModel={activeModel}
+            onClose={() => setIsModalOpen(false)}
+            onSuccess={fetchData}
+            currentEditItem={currentEditItem}
+            models={models}
+            departments={departments}
+            courses={courses}
+            creditParts={creditParts}
+            seasons={seasons}
+            years={years}
+            rooms={rooms}
+            timeslots={timeslots}
+            students={students}
+            sections={sections}
+            faculty={faculty}
+            API_URL={API_URL}
+          />
+        )}
 
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          message={`Are you sure you want to delete this ${activeModel}?`}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => setIsConfirmModalOpen(false)}
-        />
-      )}
-    </div>
+        {isConfirmModalOpen && (
+          <ConfirmModal
+            message={`Are you sure you want to delete this ${activeModel}?`}
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => setIsConfirmModal(false)}
+          />
+        )}
+      </div>
+    </>
   );
 }
 
@@ -392,7 +394,8 @@ function Modal({
     case "Department":
       fields = [
         { name: "dept_id", type: "text" },
-        { name: "dept_name", type: "text" },
+        { name: "dept_short_name", type: "text" },
+        { name: "long_name", type: "text" },
       ];
       break;
     case "Course":
@@ -400,6 +403,10 @@ function Modal({
         { name: "course_id", type: "text" },
         { name: "title", type: "text" },
         { name: "credit", type: "number" },
+        { name: "need_credit", type: "number" },
+        { name: "amount", type: "number" },
+        { name: "prerequisite_id", type: "select", options: courses },
+        { name: "extra_course_id", type: "select", options: courses },
         { name: "dept_id", type: "select" },
       ];
       break;
@@ -408,9 +415,8 @@ function Modal({
         { name: "faculty_short_id", type: "text" },
         { name: "first_name", type: "text" },
         { name: "last_name", type: "text" },
-        { name: "mobile_no", type: "tel" },
-        { name: "email", type: "email" },
-        { name: "address", type: "text" },
+        { name: "fac_email", type: "email" },
+        { name: "room_no", type: "text" },
         { name: "dept_id", type: "select" },
       ];
       break;
@@ -422,7 +428,10 @@ function Modal({
       ];
       break;
     case "Room":
-      fields = [{ name: "room_no", type: "text" }];
+      fields = [
+        { name: "room_no", type: "text" },
+        { name: "building", type: "text" },
+      ];
       break;
     case "Season":
       fields = [
@@ -435,9 +444,9 @@ function Modal({
       break;
     case "Timeslot":
       fields = [
-        { name: "day", type: "select" },
-        { name: "start_time", type: "select" },
-        { name: "end_time", type: "select" },
+        { name: "day", type: "text" },
+        { name: "start_time", type: "text" },
+        { name: "end_time", type: "text" },
       ];
       break;
     case "Section":
@@ -462,7 +471,15 @@ function Modal({
       ];
       break;
     case "University":
-      fields = [{ name: "option", type: "text" }];
+      fields = [
+        { name: "option", type: "number" },
+        { name: "is_advising", type: "boolean" },
+        { name: "curr_season", type: "select" },
+        { name: "curr_year", type: "select" },
+        { name: "credit_id", type: "select" },
+        { name: "min_cred_need", type: "number" },
+        { name: "max_cred_need", type: "number" },
+      ];
       break;
     case "Student Takes":
       fields = [
@@ -485,7 +502,11 @@ function Modal({
     } else {
       const initialData = {};
       fields.forEach((field) => {
-        initialData[field.name] = "";
+        if (field.type === "boolean") {
+          initialData[field.name] = false;
+        } else {
+          initialData[field.name] = "";
+        }
       });
       setFormData(initialData);
     }
@@ -551,26 +572,47 @@ function Modal({
 
     if (field.type === "select") {
       let options = [];
-      let labelKey = field.name;
+      let labelKey;
 
       switch (field.name) {
         case "dept_id":
           options = departments;
-          labelKey = "dept_name";
+          labelKey = "dept_short_name";
           break;
         case "course_id":
+        case "prerequisite_id":
+        case "extra_course_id":
           options = courses;
           labelKey = "title";
           break;
         case "credit_id":
           options = creditParts;
-          labelKey = "credits";
-          break;
+          // Special handling to display min/max credits in the option label
+          return (
+            <select
+              key={field.name}
+              name={field.name}
+              value={value}
+              onChange={handleChange}
+              disabled={isDisabled}
+              className="input-field"
+            >
+              <option value="">Select Credit Partition</option>
+              {options.map((option, index) => (
+                <option key={index} value={option.credit_id}>
+                  ID: {option.credit_id} (Credits: {option.min_cred}-
+                  {option.max_cred})
+                </option>
+              ))}
+            </select>
+          );
         case "season_id":
+        case "curr_season":
           options = seasons;
           labelKey = "season_name";
           break;
         case "year":
+        case "curr_year":
           options = years;
           labelKey = "year";
           break;
@@ -612,7 +654,11 @@ function Modal({
           disabled={isDisabled}
           className="input-field"
         >
-          <option value="">Select {field.name}</option>
+          <option value="">
+            {options.length > 0
+              ? `Select ${field.name.split("_").join(" ")}`
+              : "Loading..."}
+          </option>
           {options.map((option, index) => (
             <option key={index} value={labelKey ? option[field.name] : option}>
               {labelKey ? option[labelKey] : option}
