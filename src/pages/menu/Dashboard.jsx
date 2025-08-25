@@ -456,6 +456,7 @@ function Modal({
         { name: "section_no", type: "number" },
         { name: "course_id", type: "select" },
         { name: "room_no", type: "select" },
+        { name: "capacity", type: "number" },
         { name: "day", type: "select" },
         { name: "start_time", type: "select" },
         { name: "end_time", type: "select" },
