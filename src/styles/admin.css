@@ -1,0 +1,88 @@
+.home-page {
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.left {
+  width: 250px;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+  box-shadow: 3px 0 8px rgba(0, 0, 0, 0.08);
+  padding: 1px 20px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 15px 15px 0;
+  flex-shrink: 0;
+}
+
+.left-menu {
+  flex-grow: 1;
+}
+
+.left-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0 0;
+}
+
+.left-menu li {
+  margin-bottom: 12px;
+}
+
+.left-menu a,
+.left-menu button {
+  text-decoration: none;
+  color: #555;
+  font-size: 1.11em;
+  padding: 12px 18px;
+  display: block;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.left-menu a:hover,
+.left-menu button:hover {
+  background-color: #e9ecef;
+  color: #000000;
+  transform: translateX(5px);
+}
+
+.left-menu a.active {
+  background-color: #5d93cd;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
+}
+
+.left-menu button.logout-button {
+  margin-top: 20px;
+  color: #dc3545;
+}
+
+.left-menu button.logout-button:hover {
+  background-color: #f8d7da;
+  color: #dc3545;
+  transform: translateX(5px);
+}
+
+.right {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: #eef2f7;
+  overflow-y: auto;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.24)),
+    url("https://plus.unsplash.com/premium_vector-1746453017959-f783072892c9?q=80&w=3260&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* Replace with your image URL */
+  background-size: cover;
+
+  border-left: none;
+}
