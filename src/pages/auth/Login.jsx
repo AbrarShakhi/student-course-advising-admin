@@ -1,3 +1,4 @@
+import MAIN_URL from "../../../misc/api";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "../../styles/auth.css";
@@ -12,7 +13,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = "http://localhost:5000/admin/login";
+  const API_URL = MAIN_URL + "/admin/login";
 
   const handleChange = (e) => {
     const { name, value } = e.target;

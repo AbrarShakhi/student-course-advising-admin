@@ -1,4 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
+import MAIN_URL from "../../misc/api";
 import React, { useState, useEffect } from "react";
 
 // The purpose of this guard is to redirect a logged-in user away from public pages like login.
@@ -11,7 +12,7 @@ const PublicGuard = () => {
       try {
         // The browser will automatically send the HttpOnly cookie with this request.
         // We only care if the request succeeds (e.g., a 200 status code).
-        const response = await fetch("http://localhost:5000/admin/check-auth");
+        const response = await fetch(MAIN_URL + "/admin/check-auth");
 
         if (response.ok) {
           // If the response is ok, it means the server found the valid token in the cookie.

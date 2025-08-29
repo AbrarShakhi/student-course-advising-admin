@@ -1,3 +1,4 @@
+import MAIN_URL from "../../../misc/api";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Toaster, toast } from "react-hot-toast";
@@ -41,7 +42,7 @@ export default function Dashboard() {
   const [isConfirmModalOpen, setIsConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
 
-  const API_URL = "http://localhost:5000/crud";
+  const API_URL = MAIN_URL + "/crud";
 
   // Updated models array with Offers model
   const models = [
