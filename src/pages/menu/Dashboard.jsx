@@ -296,9 +296,35 @@ export default function Dashboard() {
                   {data.length > 0 ? (
                     data.map((item, index) => (
                       <tr key={index}>
-                        {dataKeys.map((key) => (
-                          <td key={key}>{String(item[key])}</td>
-                        ))}
+                        {dataKeys.map((key) => {
+                          let displayValue = String(item[key]);
+                          if (key === "curr_season") {
+                            const season = seasons.find(
+                              (s) => s.season_id === item[key]
+                            );
+                            displayValue = season
+                              ? season.season_name
+                              : displayValue;
+                          } else if (key === "curr_year") {
+                            const year = years.find(
+                              (y) => y.year === item[key]
+                            );
+                            displayValue = year ? year.year : displayValue;
+                          } else if (key === "is_advising") {
+                            displayValue = item[key] ? "Yes" : "No";
+                          } else if (
+                            key === "credit_id" &&
+                            activeModel === "University"
+                          ) {
+                            const creditPart = creditParts.find(
+                              (cp) => cp.credit_id === item[key]
+                            );
+                            displayValue = creditPart
+                              ? `ID: ${creditPart.credit_id} (Credits: ${creditPart.min_cred}-${creditPart.max_cred})`
+                              : displayValue;
+                          }
+                          return <td key={key}>{displayValue}</td>;
+                        })}
                         <td className="action-cell">
                           <button
                             onClick={() => handleEdit(item)}
@@ -539,14 +565,6 @@ function Modal({
     let url;
     let method;
 
-    // const requestData = { ...formData };
-    // if (activeModel === "Section") {
-    //   requestData.season_id = parseInt(requestData.season_id);
-    //   requestData.year = parseInt(requestData.year);
-    //   requestData.section_no = parseInt(requestData.section_no);
-    //   requestData.capacity = parseInt(requestData.capacity);
-    // }
-
     if (currentEditItem) {
       const pkPath = pk_fields
         .map((key) => encodeURIComponent(currentEditItem[key]))
@@ -598,7 +616,13 @@ function Modal({
           labelKey = "dept_short_name";
           break;
         case "course_id":
+          options = courses;
+          labelKey = "title";
+          break;
         case "prerequisite_id":
+          options = courses;
+          labelKey = "title";
+          break;
         case "extra_course_id":
           options = courses;
           labelKey = "title";
@@ -678,7 +702,7 @@ function Modal({
               : "Loading..."}
           </option>
           {options.map((option, index) => (
-            <option key={index} value={labelKey ? option[field.name] : option}>
+            <option key={index} value={labelKey ? option["course_id"] : option}>
               {labelKey ? option[labelKey] : option}
             </option>
           ))}
