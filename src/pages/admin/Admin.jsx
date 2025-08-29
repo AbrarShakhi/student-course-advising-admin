@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
+import MAIN_URL from "../../../misc/api";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Admin = () => {
     }
 
     try {
-      const response = await fetch("/admin/logout", {
+      const response = await fetch(MAIN_URL + "/admin/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

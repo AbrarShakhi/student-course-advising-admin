@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Navigate } from "react-router-dom";
+import MAIN_URL from "../../misc/api";
 
-const API_URL = "http://localhost:5000";
+const API_URL = MAIN_URL;
 
 // This is the new, specific endpoint for checking authentication status
 const PROTECTED_ADMIN_URL = `${API_URL}/admin/check-auth`;
