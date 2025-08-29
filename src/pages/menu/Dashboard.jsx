@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import "../../styles/dashboard.css";
 
-// This is the main Dashboard component that manages the state and data flow
 export default function Dashboard() {
   const [activeModel, setActiveModel] = useState("Student");
   const [data, setData] = useState([]);
@@ -609,27 +608,46 @@ function Modal({
     if (field.type === "select") {
       let options = [];
       let labelKey;
+      let valueKey;
 
       switch (field.name) {
         case "dept_id":
           options = departments;
           labelKey = "dept_short_name";
+          valueKey = "dept_id";
           break;
         case "course_id":
-          options = courses;
-          labelKey = "title";
-          break;
         case "prerequisite_id":
-          options = courses;
-          labelKey = "title";
-          break;
         case "extra_course_id":
           options = courses;
           labelKey = "title";
+          valueKey = "course_id";
           break;
         case "credit_id":
           options = creditParts;
-          // Special handling to display min/max credits in the option label
+          labelKey = "credit_id";
+          valueKey = "credit_id";
+          break;
+        case "season_id":
+        case "curr_season":
+          options = seasons;
+          labelKey = "season_name";
+          valueKey = "season_id";
+          break;
+        case "year":
+        case "curr_year":
+          options = years;
+          labelKey = "year";
+          valueKey = "year";
+          break;
+        case "room_no":
+          options = rooms;
+          labelKey = "room_no";
+          valueKey = "room_no";
+          break;
+        case "day":
+          // Special handling for Timeslot `day`
+          options = [...new Set(timeslots.map((ts) => ts.day))];
           return (
             <select
               key={field.name}
@@ -639,54 +657,55 @@ function Modal({
               disabled={isDisabled}
               className="input-field"
             >
-              <option value="">Select Credit Partition</option>
+              <option value="">Select Day</option>
               {options.map((option, index) => (
-                <option key={index} value={option.credit_id}>
-                  ID: {option.credit_id} (Credits: {option.min_cred}-
-                  {option.max_cred})
+                <option key={index} value={option}>
+                  {option}
                 </option>
               ))}
             </select>
           );
-        case "season_id":
-        case "curr_season":
-          options = seasons;
-          labelKey = "season_name";
-          break;
-        case "year":
-        case "curr_year":
-          options = years;
-          labelKey = "year";
-          break;
-        case "room_no":
-          options = rooms;
-          labelKey = "room_no";
-          break;
-        case "day":
-          options = timeslots.map((ts) => ts.day);
-          options = [...new Set(options)];
-          break;
         case "start_time":
         case "end_time":
-          options = timeslots.map((ts) => ts[field.name]);
-          options = [...new Set(options)];
-          break;
+          // Special handling for Timeslot `start_time` and `end_time`
+          options = [...new Set(timeslots.map((ts) => ts[field.name]))];
+          return (
+            <select
+              key={field.name}
+              name={field.name}
+              value={value}
+              onChange={handleChange}
+              disabled={isDisabled}
+              className="input-field"
+            >
+              <option value="">Select Time</option>
+              {options.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          );
         case "student_id":
           options = students;
-          labelKey = "student_id";
+          labelKey = "first_name";
+          valueKey = "student_id";
           break;
         case "section_no":
           options = sections;
           labelKey = "section_no";
+          valueKey = "section_no";
           break;
         case "faculty_short_id":
           options = faculty;
           labelKey = "faculty_short_id";
+          valueKey = "faculty_short_id";
           break;
         default:
-          break;
+          return null; // Handle unexpected fields gracefully
       }
 
+      // Generic rendering for all other select fields
       return (
         <select
           key={field.name}
@@ -702,8 +721,8 @@ function Modal({
               : "Loading..."}
           </option>
           {options.map((option, index) => (
-            <option key={index} value={labelKey ? option["course_id"] : option}>
-              {labelKey ? option[labelKey] : option}
+            <option key={index} value={option[valueKey]}>
+              {option[labelKey] || option[valueKey]}
             </option>
           ))}
         </select>
@@ -713,7 +732,9 @@ function Modal({
     if (field.type === "boolean") {
       return (
         <div key={field.name} className="checkbox-container">
-          <label htmlFor={field.name}>{field.label || field.name}</label>
+          <label htmlFor={field.name}>
+            {field.label || field.name.split("_").join(" ")}
+          </label>
           <input
             type="checkbox"
             id={field.name}
@@ -732,7 +753,7 @@ function Modal({
         key={field.name}
         type={field.type}
         name={field.name}
-        placeholder={field.label || field.name}
+        placeholder={field.label || field.name.split("_").join(" ")}
         value={value}
         onChange={handleChange}
         disabled={isDisabled}
