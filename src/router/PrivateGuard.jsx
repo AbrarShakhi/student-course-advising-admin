@@ -25,7 +25,6 @@ const PrivateGard = () => {
         if (response.ok) {
           setIsAuthenticated(true);
         } else {
-          // Any non-200 status (including 401 from an invalid token) will set isAuthenticated to false
           console.error(
             "Authentication check failed with status:",
             response.status
@@ -56,7 +55,7 @@ const PrivateGard = () => {
         <p>Loading...</p>{" "}
       </div>
     );
-  } // Corrected redirection path to the dashboard
+  }
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/admin/login" />;
 };

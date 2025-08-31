@@ -6,6 +6,7 @@ import Login from "../pages/auth/Login";
 import Admin from "../pages/admin/Admin";
 
 import Dashboard from "../pages/menu/Dashboard";
+import Scheduler from "../pages/menu/Scheduler";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
           {
             path: "dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "scheduler",
+            element: <Scheduler />,
           },
           {
             path: "logout",

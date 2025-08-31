@@ -1,0 +1,240 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.main-card {
+  margin-top: -10%;
+  width: 100%;
+  max-width: 60rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(149, 147, 147, 0.2),
+    0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border: 1px solid #c5cbd5;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.header-subtitle {
+  text-align: center;
+  color: #252a34;
+  margin-bottom: 2rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .form-container {
+    flex-direction: row;
+  }
+}
+
+.input-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced7e2;
+  border-radius: 10px;
+  color: #000000;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 20px;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.submit-button {
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2d6aef;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.submit-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.submit-button:disabled {
+  background: #4b5563;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(165, 163, 163, 0.06);
+  margin-top: 2rem;
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  border: 4px solid rgba(59, 130, 246, 0.3);
+  border-top-color: #38bdf8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #d1d5db;
+  margin-top: 1rem;
+}
+
+.loading-subtext {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.error-alert {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #fca5a5;
+  background: #450a0a;
+  border: 1px solid #b91c1c;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-title {
+  font-weight: bold;
+}
+
+.error-message {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.schedule-table-container {
+  margin-top: 2rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: #1f2937;
+  border: 1px solid #e3e3e3;
+}
+
+.schedule-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 1rem;
+  background: rgba(170, 174, 183, 0.5);
+  text-align: center;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.schedule-table {
+  min-width: 100%;
+  font-size: 0.875rem;
+  text-align: left;
+  color: #e5eaf2;
+  border-collapse: collapse;
+}
+
+.schedule-table thead tr {
+  color: #a5f3fc;
+  text-transform: uppercase;
+  background: rgba(55, 65, 81, 0.5);
+  font-weight: 600;
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 0.75rem 1.5rem;
+}
+
+.schedule-table tbody tr {
+  border-bottom: 1px solid #a1aec3;
+  transition: background-color 0.2s;
+}
+
+.schedule-table tbody tr:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
+.schedule-table td:first-child {
+  font-weight: 600;
+  color: #000000;
+}
+
+.no-schedule-message {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #9ca3af;
+  background: #374151;
+  border-radius: 0.5rem;
+}

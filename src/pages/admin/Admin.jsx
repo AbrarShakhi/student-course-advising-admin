@@ -32,15 +32,9 @@ const Admin = () => {
       } else {
         const errorData = await response.json();
         console.error("Logout failed:", errorData.message);
-
-        localStorage.removeItem("jwt_token");
-        navigate("/admin/login");
       }
     } catch (error) {
-      // Handle network errors (e.g., server is down)
       console.error("A network error occurred during logout:", error);
-      // In a real application, you might show an error message to the user
-      // but still proceed with clearing the token and redirecting.
       localStorage.removeItem("jwt_token");
       navigate("/admin");
     }
@@ -58,6 +52,15 @@ const Admin = () => {
                   className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Home
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="scheduler"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Scheduler
                 </NavLink>
               </li>
 
